@@ -8,7 +8,6 @@
 //.arm
 .section .text._start
 .global _start, vectors_start, vectors_end
-.global reset_handler_addr, undef_handler_addr, swi_handler_addr, prefetch_abort_handler_addr, data_abort_handler_addr, hyp_handler_addr, irq_handler_addr, fiq_handler_addr
 _start:
 
 mov r0, #0
@@ -137,63 +136,3 @@ msr cpsr, #0x13 // go to SVC mode with irq enabled
 bl init
 b .             // loop if we return
 
-// Figure out, whether the later can be done more efficient:
-
-irq_handler:
-//sub lr, lr, #4
-//stmfd sp!, {r0,r12, lr} // put stuff on the stack
-ldr r1, =UART_DATA
-mov r2, #'!'
-str r2, [r1]
-//bl irq_rhandler
-//ldmfd sp!, {r0,r12, lr} // get stuff from the stack
-b .
-
-undef_handler:
-ldr r1, =UART_DATA
-mov r2, #'u'
-str r2, [r1]
-b .
-
-swi_handler:
-ldr r1, =UART_DATA
-mov r2, #'s'
-str r2, [r1]
-b .
-
-prefetch_abort_handler:
-ldr r1, =UART_DATA
-mov r2, #'p'
-str r2, [r1]
-b .
-
-data_abort_handler:
-ldr r1, =UART_DATA
-mov r2, #'d'
-str r2, [r1]
-b .
-
-fiq_handler:
-b .
-
-// Should have its one section?
-/*.section .text._vectortable*/
-vectors_start:
-ldr pc, reset_handler_addr
-ldr pc, undef_handler_addr
-ldr pc, swi_handler_addr
-ldr pc, prefetch_abort_handler_addr
-ldr pc, data_abort_handler_addr
-ldr pc, hyp_handler_addr
-ldr pc, irq_handler_addr
-ldr pc, fiq_handler_addr
-
-reset_handler_addr: .word irq_handler
-undef_handler_addr: .word undef_handler
-swi_handler_addr: .word swi_handler
-prefetch_abort_handler_addr: .word prefetch_abort_handler
-data_abort_handler_addr: .word data_abort_handler
-hyp_handler_addr: .word irq_handler
-irq_handler_addr: .word irq_handler
-fiq_handler_addr: .word irq_handler
-vectors_end:
