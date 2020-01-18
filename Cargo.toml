@@ -1,0 +1,24 @@
+[package]
+name = "rustybeagle"
+version = "0.1.0"
+authors = ["Moritz Doll <doll@uni-bremen.de>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+r0 = "0.2.2"
+register = "^0.5.0"
+armv7 = {path = "../armv7" }
+sitara = {path = "../sitara" }
+spin = "0.5.2"
+
+[dependencies.lazy_static]
+version = "1.4.0"
+features = ["spin_no_std"]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

@@ -1,0 +1,6 @@
+[build]
+target = "armv7-unknown-none.json"
+rustflags = [
+    "-C", "link-arg=-Tlink.ld",
+    "-C", "target-cpu=cortex-a8",
+]
